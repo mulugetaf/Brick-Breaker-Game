@@ -5,7 +5,12 @@ import danogl.gui.*;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
-import gameobjects.*;
+import gameobjects.Ball;
+import gameobjects.Brick;
+import gameobjects.CollisionStrategy;
+import gameobjects.Paddle;
+import movement_strategies.AIMovementStratgey;
+import movement_strategies.UserMovmentStratgey;
 
 import java.awt.*;
 import java.util.Random;
@@ -22,7 +27,7 @@ public class BouncingBallGameManager extends GameManager {
     private Ball ball;
     private WindowController windowController;
     private Vector2 windowsDimension;
-    private int userLives = 3, AiLives = 3;
+    private int userLives = 3;
 
 
     public BouncingBallGameManager(String windowTitle, Vector2 windowDimensions) {
@@ -46,6 +51,8 @@ public class BouncingBallGameManager extends GameManager {
         windowsDimension = windowController.getWindowDimensions();
         //creat ball
         creatBall(imageReader, soundReader, windowController);
+        //set borders
+        setBorders();
         //creat user paddles
         Renderable paddleImage = imageReader.readImage("assets/paddle.png", false);
         creatUserPaddle(paddleImage, inputListener, windowsDimension);
@@ -68,8 +75,6 @@ public class BouncingBallGameManager extends GameManager {
 
         //add background
         gameObjects().addGameObject(background, Layer.BACKGROUND);
-        //set borders
-        setBorders(windowsDimension);
 
 
     }
@@ -99,6 +104,7 @@ public class BouncingBallGameManager extends GameManager {
             prompt += "You win!";
         }
         if (ballHeight > windowsDimension.y()) {
+            userLives--;
             //we lose
             if (userLives == 0) {
                 prompt += "You Lose!";
@@ -115,7 +121,7 @@ public class BouncingBallGameManager extends GameManager {
 
     }
 
-    private void setBorders(Vector2 windowsDimension) {
+    private void setBorders() {
         float xDim = windowsDimension.x(), yDim = windowsDimension.y();
 
         GameObject[] Borders = {
@@ -124,9 +130,9 @@ public class BouncingBallGameManager extends GameManager {
                 //rightBorder
                 new GameObject(new Vector2(xDim - 10, 0), new Vector2(BORDER_WIDTH, yDim), new RectangleRenderable(Color.cyan))};
         //topBorder
-//                new GameObject(Vector2.ZERO, new Vector2(xDim, BORDER_WIDTH), null),
+        //  new GameObject(Vector2.ZERO, new Vector2(xDim, BORDER_WIDTH), null),
         //bottomBorder
-//                new GameObject(new Vector2(0, yDim), new Vector2(xDim, BORDER_WIDTH), null)};
+        // new GameObject(new Vector2(0, yDim), new Vector2(xDim, BORDER_WIDTH), null)};
 
         //set all borders
         for (GameObject border : Borders)
@@ -138,8 +144,11 @@ public class BouncingBallGameManager extends GameManager {
     //creat User paddle
     private void creatUserPaddle(Renderable paddleImage, UserInputListener inputListener, Vector2 windowsDimension) {
         // user paddle (Bottom)
-        GameObject userPaddle =
-                new UserPaddle(Vector2.ZERO, new Vector2(PADDLE_WIDTH, PADDLE_HEIGHT), paddleImage, inputListener, windowsDimension.x());
+        GameObject userPaddle = new Paddle(
+                Vector2.ZERO,
+                new Vector2(PADDLE_WIDTH, PADDLE_HEIGHT),
+                paddleImage,
+                new UserMovmentStratgey(inputListener, windowsDimension.x()));
         userPaddle.setCenter(new Vector2(windowsDimension.x() / 2, windowsDimension.y() - 30));
         gameObjects().addGameObject(userPaddle);
     }
@@ -147,8 +156,11 @@ public class BouncingBallGameManager extends GameManager {
     //creat AI paddle
     private void creatAIPaddle(Vector2 windowsDimensions, Renderable paddleImage) {
         //ai paddle (Top)
-        GameObject aiPaddle =
-                new AIPaddle(Vector2.ZERO, new Vector2(PADDLE_WIDTH, PADDLE_HEIGHT), paddleImage, ball, windowsDimensions.x());
+        GameObject aiPaddle = new Paddle(
+                Vector2.ZERO,
+                new Vector2(PADDLE_WIDTH, PADDLE_HEIGHT),
+                paddleImage,
+                new AIMovementStratgey(ball, windowsDimensions.x()));
         aiPaddle.setCenter(new Vector2(windowsDimensions.x() / 2, 30));
 
         gameObjects().addGameObject(aiPaddle);
@@ -192,7 +204,7 @@ public class BouncingBallGameManager extends GameManager {
             brick.setCenter(new Vector2(numOfBricks * BRICK_WIDTH + bWidth, bWidth + bheight));
 
             numOfBricks++;
-//            gameObjects().addGameObject(brick);
+            //  gameObjects().addGameObject(brick);
             if (numOfBricks == 7) {
                 numOfBricks = 0;
                 bheight += 21;
