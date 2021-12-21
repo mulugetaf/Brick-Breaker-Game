@@ -17,9 +17,12 @@ public class AIMovementStratgey implements MovementStrategy {
     @Override
     public Vector2 calcMovementDir(GameObject paddle) {
         Vector2 movementDir = Vector2.ZERO;
-        if (objectToFollow.getCenter().x() < paddle.getCenter().x())
+        float epsilon = 20;
+        if (objectToFollow.getCenter().x() < paddle.getCenter().x() + epsilon
+                && objectToFollow.getCenter().x() < paddle.getCenter().x() - epsilon)
             movementDir = Vector2.LEFT;
-        if (objectToFollow.getCenter().x() > paddle.getCenter().x())
+        if (objectToFollow.getCenter().x() + epsilon > paddle.getCenter().x()
+                && objectToFollow.getCenter().x() - epsilon > paddle.getCenter().x())
             movementDir = Vector2.RIGHT;
         //check if paddle outbound top left corner
         if (paddle.getTopLeftCorner().x() < MIN_DISTANCE_FROM_SCREEN_EDGE) {

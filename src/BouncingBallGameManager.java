@@ -13,7 +13,6 @@ import movement_strategies.AIMovementStratgey;
 import movement_strategies.UserMovmentStratgey;
 
 import java.awt.*;
-import java.util.Random;
 
 public class BouncingBallGameManager extends GameManager {
 
@@ -36,7 +35,7 @@ public class BouncingBallGameManager extends GameManager {
     }
 
     public static void main(String[] args) {
-        new BouncingBallGameManager("BouncingBall", new Vector2(700, 500)).run();
+        new BouncingBallGameManager("BouncingBall", new Vector2(750, 500)).run();
 
     }
 
@@ -123,21 +122,15 @@ public class BouncingBallGameManager extends GameManager {
 
     private void setBorders() {
         float xDim = windowsDimension.x(), yDim = windowsDimension.y();
-
-        GameObject[] Borders = {
-                //leftBorder
-                new GameObject(Vector2.ZERO, new Vector2(BORDER_WIDTH, yDim), new RectangleRenderable(Color.cyan)),
-                //rightBorder
-                new GameObject(new Vector2(xDim - 10, 0), new Vector2(BORDER_WIDTH, yDim), new RectangleRenderable(Color.cyan))};
-        //topBorder
-        //  new GameObject(Vector2.ZERO, new Vector2(xDim, BORDER_WIDTH), null),
-        //bottomBorder
-        // new GameObject(new Vector2(0, yDim), new Vector2(xDim, BORDER_WIDTH), null)};
-
+        //leftBorder
+        GameObject leftBorder = new GameObject(
+                Vector2.ZERO, new Vector2(BORDER_WIDTH, yDim), new RectangleRenderable(Color.cyan));
+        //rightBorder
+        GameObject rightBorder = new GameObject(
+                new Vector2(xDim - 10, 0), new Vector2(BORDER_WIDTH, yDim), new RectangleRenderable(Color.cyan));
         //set all borders
-        for (GameObject border : Borders)
-            gameObjects().addGameObject(border);
-
+        gameObjects().addGameObject(leftBorder);
+        gameObjects().addGameObject(rightBorder);
 
     }
 
@@ -180,31 +173,22 @@ public class BouncingBallGameManager extends GameManager {
         Vector2 windowsDimension = windowController.getWindowDimensions();
         ball.setCenter(windowsDimension.mult(0.5F));
         gameObjects().addGameObject(ball);
-        float ballVelX = BALL_SPEED;
-        float ballVelY = BALL_SPEED;
-        Random rand = new Random();
-        if (rand.nextBoolean())
-            ballVelX *= -1;
-        if (rand.nextBoolean())
-            ballVelY *= -1;
-        //make ball move down
-        ball.setVelocity(new Vector2(ballVelX, ballVelY));
+        ball.setVelocity(new Vector2(BALL_SPEED, BALL_SPEED));
     }
 
     private void creatBrick(Renderable brickImage) {
         CollisionStrategy collisionStrategy = new CollisionStrategy(gameObjects());
-        int Bricks = 49;
+        int Bricks = 77;
         int numOfBricks = 0;
         int numOfRow = 1;
-        int bWidth = 50;
+        int bWidth = 77;
         int bheight = 21;
         GameObject brick;
         for (int i = 0; i < Bricks; i++) {
             brick = new Brick(Vector2.ZERO, new Vector2(BRICK_WIDTH, BRICK_HEIGHT), brickImage, collisionStrategy);
-            brick.setCenter(new Vector2(numOfBricks * BRICK_WIDTH + bWidth, bWidth + bheight));
+            brick.setCenter(new Vector2(numOfBricks * BRICK_WIDTH + bWidth, bWidth / 2 + bheight));
 
             numOfBricks++;
-            //  gameObjects().addGameObject(brick);
             if (numOfBricks == 7) {
                 numOfBricks = 0;
                 bheight += 21;
