@@ -21,6 +21,7 @@ public class UserMovmentStratgey implements MovementStrategy {
     @Override
     public Vector2 calcMovementDir(GameObject paddle) {
         Vector2 movementDir = Vector2.ZERO;
+
         if (inputListener.isKeyPressed(KeyEvent.VK_LEFT)) {
             movementDir = movementDir.add(Vector2.LEFT);
 

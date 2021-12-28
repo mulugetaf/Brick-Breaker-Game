@@ -1,6 +1,8 @@
 package gameobjects;
 
+import brick_strategies.AddNewPaddleStrategy;
 import danogl.GameObject;
+import danogl.collisions.Collision;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 import movement_strategies.MovementStrategy;

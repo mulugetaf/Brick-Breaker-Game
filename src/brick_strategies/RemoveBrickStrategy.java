@@ -1,19 +1,21 @@
-package gameobjects;
+package brick_strategies;
 
 import danogl.GameObject;
 import danogl.collisions.GameObjectCollection;
 import danogl.collisions.Layer;
 
-public class CollisionStrategy {
-
+public class RemoveBrickStrategy implements CollisionStrategy {
     private GameObjectCollection gameObjects;
 
-    public CollisionStrategy(GameObjectCollection gameObjects) {
+    public RemoveBrickStrategy(GameObjectCollection gameObjects) {
+
         this.gameObjects = gameObjects;
     }
 
+
+
+    @Override
     public void onColllision(GameObject thisObj, GameObject otherObj) {
-        gameObjects.removeGameObject(thisObj, Layer.STATIC_OBJECTS);
-//        System.out.println("collision with brick detected");
+            gameObjects.removeGameObject(thisObj, Layer.STATIC_OBJECTS);
     }
 }

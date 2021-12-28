@@ -1,5 +1,8 @@
+import brick_strategies.BrickStrategyFactory;
+import brick_strategies.CollisionStrategy;
 import danogl.GameManager;
 import danogl.GameObject;
+import danogl.collisions.GameObjectCollection;
 import danogl.collisions.Layer;
 import danogl.gui.*;
 import danogl.gui.rendering.RectangleRenderable;
@@ -7,12 +10,12 @@ import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 import gameobjects.Ball;
 import gameobjects.Brick;
-import gameobjects.CollisionStrategy;
 import gameobjects.Paddle;
 import movement_strategies.AIMovementStratgey;
 import movement_strategies.UserMovmentStratgey;
 
 import java.awt.*;
+import java.util.Random;
 
 public class BouncingBallGameManager extends GameManager {
 
@@ -60,8 +63,12 @@ public class BouncingBallGameManager extends GameManager {
         creatAIPaddle(windowsDimension, paddleImage);
         //creat brick image
         Renderable brickImage = imageReader.readImage("assets/brick.png", false);
+        Random rand = new Random();
+        BrickStrategyFactory brickStrategy = new BrickStrategyFactory(gameObjects(),
+                windowController, imageReader, soundReader,
+                windowController.getWindowDimensions(), inputListener);
         //creat brick
-        creatBrick(brickImage);
+        creatBrick(brickImage, brickStrategy, imageReader, soundReader, inputListener);
         //creat live image
         Renderable liveImage = imageReader.readImage("assets/heart.png", false);
         //creat user live
@@ -72,8 +79,10 @@ public class BouncingBallGameManager extends GameManager {
                 windowController.getWindowDimensions(),
                 imageReader.readImage("assets/DARK_BG2_small.jpeg", false));
 
+
         //add background
         gameObjects().addGameObject(background, Layer.BACKGROUND);
+        GameObjectCollection g = new GameObjectCollection();
 
 
     }
@@ -176,8 +185,9 @@ public class BouncingBallGameManager extends GameManager {
         ball.setVelocity(new Vector2(BALL_SPEED, BALL_SPEED));
     }
 
-    private void creatBrick(Renderable brickImage) {
-        CollisionStrategy collisionStrategy = new CollisionStrategy(gameObjects());
+    private void creatBrick(Renderable brickImage, BrickStrategyFactory brickStrategy,
+                            ImageReader imageReader, SoundReader soundReader, UserInputListener inputListener) {
+        CollisionStrategy collisionStrategy = brickStrategy.getStrategy();
         int Bricks = 77;
         int numOfBricks = 0;
         int numOfRow = 1;
@@ -185,6 +195,13 @@ public class BouncingBallGameManager extends GameManager {
         int bheight = 21;
         GameObject brick;
         for (int i = 0; i < Bricks; i++) {
+            Random rand = new Random();
+            Boolean r = rand.nextBoolean();
+//            if(r){
+//                windowController.setTimeScale(0.5F);
+//            }
+            brickStrategy = new BrickStrategyFactory(gameObjects(), windowController,imageReader, soundReader,windowController.getWindowDimensions(), inputListener);
+            collisionStrategy = brickStrategy.getStrategy();
             brick = new Brick(Vector2.ZERO, new Vector2(BRICK_WIDTH, BRICK_HEIGHT), brickImage, collisionStrategy);
             brick.setCenter(new Vector2(numOfBricks * BRICK_WIDTH + bWidth, bWidth / 2 + bheight));
 
