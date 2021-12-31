@@ -5,6 +5,11 @@ import danogl.collisions.Collision;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 
+/**
+ * Construct a new GameObject instance.
+ * The narrow object will make the paddle smaller when collision on it.
+ * The widen object will make the paddle wide when collision on it.
+ */
 public class NarrowWidenPaddle extends GameObject {
     private final Vector2 dimensions;
 
@@ -21,6 +26,10 @@ public class NarrowWidenPaddle extends GameObject {
         this.dimensions = dimensions;
     }
 
+    /**
+     * @param other     The GameObject with which a collision occurred.
+     * @param collision Information regarding this collision.
+     */
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
@@ -28,6 +37,12 @@ public class NarrowWidenPaddle extends GameObject {
             other.setDimensions(dimensions);
     }
 
+    /**
+     * check if this object be allowed to collide the specified other object.
+     *
+     * @param other The other GameObject.
+     * @return true if the objects should collide.
+     */
     @Override
     public boolean shouldCollideWith(GameObject other) {
         //super.shouldCollideWith(other);

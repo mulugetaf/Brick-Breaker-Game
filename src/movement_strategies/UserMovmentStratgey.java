@@ -6,10 +6,13 @@ import danogl.util.Vector2;
 
 import java.awt.event.KeyEvent;
 
+/**
+ * User strategy depend on key-pressed.
+ */
 public class UserMovmentStratgey implements MovementStrategy {
     private static final float MIN_DISTANCE_FROM_SCREEN_EDGE = 3;
-    private UserInputListener inputListener;
-    private float windowDimensions_x;
+    private final UserInputListener inputListener;
+    private final float windowDimensions_x;
 
     public UserMovmentStratgey(UserInputListener inputListener, float windowDimensions_x) {
 
@@ -17,6 +20,10 @@ public class UserMovmentStratgey implements MovementStrategy {
         this.windowDimensions_x = windowDimensions_x;
     }
 
+    /**
+     * @param paddle The paddle that owns the strategy.
+     * @return The direction of  key pressed .
+     */
     @SuppressWarnings("Duplicates")
     @Override
     public Vector2 calcMovementDir(GameObject paddle) {

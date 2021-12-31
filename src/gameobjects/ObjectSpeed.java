@@ -6,10 +6,13 @@ import danogl.gui.WindowController;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 
-public class GameSpeed extends GameObject {
-    private WindowController windowController;
+/**
+ * Represents objects of game speed
+ */
+public class ObjectSpeed extends GameObject {
+    private final WindowController windowController;
+    private final float speed;
     private Vector2 dimensions;
-    private float speed;
     private boolean addQuickSpeed = true;
     private boolean addSlowSpeed = true;
 
@@ -21,7 +24,7 @@ public class GameSpeed extends GameObject {
      * @param dimensions    Width and height in window coordinates.
      * @param renderable    The renderable representing the object. Can be null, in which case
      */
-    public GameSpeed(Vector2 topLeftCorner, Vector2 dimensions, Renderable renderable, WindowController windowController, float speed) {
+    public ObjectSpeed(Vector2 topLeftCorner, Vector2 dimensions, Renderable renderable, WindowController windowController, float speed) {
         super(topLeftCorner, dimensions, renderable);
 
         this.windowController = windowController;
@@ -29,7 +32,12 @@ public class GameSpeed extends GameObject {
         this.speed = speed;
     }
 
-
+    /**
+     * Called on the first frame of a collision.
+     *
+     * @param other     The GameObject with which a collision occurred.
+     * @param collision Information regarding this collision.
+     */
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);

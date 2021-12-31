@@ -7,18 +7,21 @@ import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 import movement_strategies.MovementStrategy;
 
+/**
+ *
+ */
 public class MockPaddle extends Paddle {
+    private final GameObjectCollection gameObjects;
     public int numOfCollisions;
-    private GameObjectCollection gameObjects;
 
     /**
-     * Construct a new GameObject instance.
+     * Construct a new paddle instance.
      *
      * @param topLeftCorner    Position of the object, in window coordinates (pixels).
      *                         Note that (0,0) is the top-left corner of the window.
      * @param dimensions       Width and height in window coordinates.
      * @param renderable       The renderable representing the object. Can be null, in which case
-     * @param movementStrategy
+     * @param movementStrategy A movement direction, of type Vector2.
      */
     public MockPaddle(Vector2 topLeftCorner, Vector2 dimensions,
                       Renderable renderable, MovementStrategy movementStrategy,
@@ -28,6 +31,10 @@ public class MockPaddle extends Paddle {
         this.gameObjects = gameObjects;
     }
 
+    /**
+     * @param other     The GameObject with which a collision occurred.
+     * @param collision Information regarding this collision.
+     */
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);

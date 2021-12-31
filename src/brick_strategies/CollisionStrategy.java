@@ -1,21 +1,17 @@
 package brick_strategies;
 
 import danogl.GameObject;
-import danogl.collisions.GameObjectCollection;
-import danogl.collisions.Layer;
+import danogl.util.Counter;
 
+/**
+ * An interface for defining the Collision strategy of the brick.
+ */
 public interface CollisionStrategy {
-
-
-//    private GameObjectCollection gameObjects;
-
-//    public CollisionStrategy(GameObjectCollection gameObjects) {
-//        this.gameObjects = gameObjects;
-//    }
-
-     void onColllision(GameObject thisObj, GameObject otherObj) ;
-       // gameObjects.removeGameObject(thisObj, Layer.STATIC_OBJECTS);
-//        System.out.println("collision with brick detected");
-
+    /**
+     * @param thisObj  The current collision object.
+     * @param otherObj The GameObject with which a collision occurred.
+     * @param numberOfBricks Number of bricks left in the game.
+     */
+    void onColllision(GameObject thisObj, GameObject otherObj, Counter numberOfBricks);
 
 }

@@ -6,8 +6,11 @@ import danogl.gui.Sound;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 
+/**
+ * Represents ball in the game
+ */
 public class Ball extends GameObject {
-    private Sound collisionSound;
+    private final Sound collisionSound;
 
     /**
      * Construct a new GameObject instance.
@@ -23,10 +26,19 @@ public class Ball extends GameObject {
         this.collisionSound = collisionSound;
     }
 
+    /**
+         * Called on the first frame of a collision.
+     *
+     * @param other     – The GameObject with which a collision occurred.
+     * @param collision – Information regarding this collision. A reasonable elastic behavior can be achieved with:
+     *                  setVelocity(getVelocity().flipped(collision.getNormal()));
+     */
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
+        //change ball direction
         Vector2 newVel = getVelocity().flipped(collision.getNormal());
+        //set ball velocity after change direction
         setVelocity(newVel);
         collisionSound.play();
     }

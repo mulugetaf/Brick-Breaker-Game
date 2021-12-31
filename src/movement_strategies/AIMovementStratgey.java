@@ -3,16 +3,23 @@ package movement_strategies;
 import danogl.GameObject;
 import danogl.util.Vector2;
 
+/**
+ * AI strategy uses the ball (x,y) coordinate to determine his direction.
+ */
 public class AIMovementStratgey implements MovementStrategy {
     private static final float MIN_DISTANCE_FROM_SCREEN_EDGE = 3;
-    private GameObject objectToFollow;
-    private float windowDimensions_x;
+    private final GameObject objectToFollow;
+    private final float windowDimensions_x;
 
     public AIMovementStratgey(GameObject objectToFollow, float windowDimensions_x) {
         this.objectToFollow = objectToFollow;
         this.windowDimensions_x = windowDimensions_x;
     }
 
+    /**
+     * @param paddle The paddle that owns the strategy.
+     * @return The direction of movement according to the coordinate of the ball.
+     */
     @SuppressWarnings("Duplicates")
     @Override
     public Vector2 calcMovementDir(GameObject paddle) {
