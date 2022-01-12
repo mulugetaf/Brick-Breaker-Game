@@ -23,4 +23,4 @@ git clone https://github.com/mulugetaf/Brick-Breaker-Game.git
 4. Run the application and start play
 
 ## Screenshot
-![](assets/screenshoot.png)
+![](assets/screenshot1.PNG)
